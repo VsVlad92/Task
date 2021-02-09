@@ -103,17 +103,18 @@ controller('mainController',['$scope','$timeout', function($scope, $timeout) {
     // });
 
     records.forEach((element, index)=> {
+      let eventType = element.event.type;
       if(!records[index+1]) return;
 
-      if(!objTypes[element.event.type]){
-        objTypes[element.event.type] = {
-          type: element.event.type,
+      if(!objTypes[eventType]){
+        objTypes[eventType] = {
+          type: eventType,
           count: 0
         }
       }
 
-      if(element.event.type !== objTypes[element.event.type].type) return;
-      objTypes[element.event.type].count++;
+      if(eventType !== objTypes[eventType].type) return;
+      objTypes[eventType].count++;
 
       //min and max length
       if(min > records[index+1].time - element.time){
@@ -132,7 +133,6 @@ controller('mainController',['$scope','$timeout', function($scope, $timeout) {
 
       $scope.totalTime += records[index+1].time - element.time; 
 
-      // console.log(records[index+1].time, element.time, " : ", records[index+1].time - element.time)
     })
     //clear focus events type
     let filterRecords = records.filter(element => element.event.type !== 'focus');
