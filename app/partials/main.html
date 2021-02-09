@@ -1,0 +1,40 @@
+<div id="main">
+    <h1>Avast Task - Vlad Vasiliu</h1>
+    <button ng-click="onClickSaveJson()">Save Json File</button>
+    <button ng-click="onClickStats()">Stats</button>
+    <div style="display: flex;">
+        <div class="table-mini-container">
+            <h3>Tabel of records</h3>
+            <table class="table-mini">
+                <thead>
+                    <th ng-click="onClickSortArray('eventType')">Event Type</th>
+                    <th ng-click="onClickSortArray('name')">Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Url</th>
+                    <th ng-click="onClickSortArray('date')">Time</th>
+                </thead>
+                <tr ng-repeat="item in records">
+                    <td>{{item.event.type}}</td>
+                    <td>{{item.setup.nodeName}}</td>
+                    <td>{{item.setup.description}}</td>
+                    <td>{{item.setup.type}}</td>
+                    <td>{{item.setup.url}}</td>
+                    <td>{{item.time | date:'hh:mm:ss dd/MM/yyyy'}}</td>
+                    <!-- <td>{{item.time}}</td> -->
+                    <td><button ng-click="onClickDeleteEntry($index, item)">Delete</button></td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 30%;">
+            <h3>Stats</h3>
+            <p ng-repeat="(key, item) in typesCount">
+                <strong>{{item[0]}}</strong>: <span>{{item[1].count}}</span>
+            </p>
+            <p><strong>Min Length </strong>{{min.first.event.type}} to {{min.second.event.type}} - {{min.time}} miliseconds</p>
+            <p><strong>Max Length </strong>{{max.first.event.type}} to {{max.second.event.type}} - {{max.time}} miliseconds</p>
+            <p><strong>Length of the longest sequence </strong>: {{maxseq}}</p>
+            <p><strong>Sum of all the events </strong>: {{totalTime}} miliseconds</p>
+        </div>
+    </div>
+</div>

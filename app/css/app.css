@@ -1,0 +1,38 @@
+div.table-mini-container {
+    overflow: auto;
+    width: 1000px;
+    min-width: 100px;
+}
+
+table.table-mini {
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    width: 100%;
+}
+
+table.table-mini th, table.table-mini td {
+    border: 1px solid #ddd;
+    padding: 0.1rem;
+}
+
+table.table-mini thead, table.table-mini tfoot {
+    background-color: #f5f5f5;
+}
+
+table.table-mini > tbody > tr > td:first-child,
+table.table-mini > tbody > tr > th:first-child,
+table.table-mini > thead > tr > th:first-child,
+table.table-mini > thead > tr > td:first-child,
+table.table-mini > tfoot > tr > td:first-child,
+table.table-mini > tfoot > tr > th:first-child {
+    text-align: center;
+    background-color: #f5f5f5;
+}
+
+table.table-mini > tbody > tr > td:not(:first-child) {
+    min-width: 15px;
+}
+
+p {
+    padding-left: 35px;
+}
