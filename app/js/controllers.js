@@ -7,6 +7,8 @@ controller('mainController',['$scope','$timeout', function($scope, $timeout) {
     date:'asc'
   }
 
+  let min,max;
+
   $scope.min = {
     first:'',
     second:'',
@@ -19,7 +21,6 @@ controller('mainController',['$scope','$timeout', function($scope, $timeout) {
     time:''
   }
 
-  $scope.maxseq = 0;
   $scope.totalTime = 0;
 
   // get Data from JSON file 
@@ -77,15 +78,15 @@ controller('mainController',['$scope','$timeout', function($scope, $timeout) {
   }
 
   $scope.onClickStats = function onClickStats(){
-    let records = angular.copy($scope.records);
+    $scope.maxseq = 0;
+    const records = angular.copy($scope.records);
     // let sortRecords = angular.copy($scope.records);
     // sortRecords.sort((a,b) => (a.event.type > b.event.type) ? 1 : -1);
     let objTypes ={};
-    let count = 1;
+    // let count = 1;
     let seq = 0;
-    let min = records[1].time - records[0].time;
-    let max = 0;
-
+    min = records[1].time - records[0].time;
+    max = 0;
 
     //this is a number of types of we sort the array first
     // sortRecords.forEach((element, index) => {
@@ -103,8 +104,7 @@ controller('mainController',['$scope','$timeout', function($scope, $timeout) {
     // });
 
     records.forEach((element, index)=> {
-      let eventType = element.event.type;
-      if(!records[index+1]) return;
+      const eventType = element.event.type;
 
       if(!objTypes[eventType]){
         objTypes[eventType] = {
@@ -116,26 +116,16 @@ controller('mainController',['$scope','$timeout', function($scope, $timeout) {
       if(eventType !== objTypes[eventType].type) return;
       objTypes[eventType].count++;
 
-      //min and max length
-      if(min > records[index+1].time - element.time){
-        min = records[index+1].time - element.time;
-        $scope.min.first = element;
-        $scope.min.second = records[index+1];
-        $scope.min.time = min;
-      }
+      if(!records[index+1]) return;
 
-      if(max < records[index+1].time - element.time){
-        max = records[index+1].time - element.time;
-        $scope.max.first =  element;
-        $scope.max.second = records[index+1];
-        $scope.max.time = max;
-      }
+      //min and max length
+      getMinAndMax(element,records[index+1]);
 
       $scope.totalTime += records[index+1].time - element.time; 
 
     })
     //clear focus events type
-    let filterRecords = records.filter(element => element.event.type !== 'focus');
+    const filterRecords = records.filter(element => element.event.type !== 'focus');
     //foreach to finde maxseq of input. I think is not the best way..
     filterRecords.forEach(element =>{
       if(element.event.type === 'input'){
@@ -149,5 +139,21 @@ controller('mainController',['$scope','$timeout', function($scope, $timeout) {
     })
 
     $scope.typesCount  = Object.entries(objTypes);
+  }
+
+  function getMinAndMax(first, second){
+    if(min > second.time - first.time){
+      min = second.time - first.time;
+      $scope.min.first = first;
+      $scope.min.second = second;
+      $scope.min.time = min;
+    }
+
+    if(max < second.time - first.time){
+      max = second.time - first.time;
+      $scope.max.first =  first;
+      $scope.max.second = second;
+      $scope.max.time = max;
+    }
   }
 }])
